@@ -1,0 +1,21 @@
+1. update filter data logic as opposit,
+currently iterating the train object and finding all avaliable routes instead do opposit, iterate stations and find if matching route in train
+
+2. add optimality function based on the following:
+
+3. Remove hardcoding in from station to to station index as used like 15 and 8
+4. Take input in api for from station and to station
+5. make wrapper function for the above api to be used to find the most optimal way.
+6. apis to be made:
+    - get all data for given date
+    - get particular train data for given date
+    - find all available paths (availibility) for given train and given date
+    - find the most optimal path for given train from one station to another on a given date.
+    - find the most optimal way to travel from all trains on a given date.
+
+<!-- phase 2 -->
+1. Add multiple breaks per train only instead of two only as implemented now.
+2. Find min waitlist ticket route if no available route found(try one route first if wl is high try split)
+
+<!-- phase3 -->
+1. Add maximum two trains switch and route to destination
