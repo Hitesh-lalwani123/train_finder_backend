@@ -31,3 +31,12 @@ def read_all(client):
 def close_connection(client):
     client.close()
     return
+
+
+
+def clear_collection(client):
+    db = client['train_data']
+    collection = db['train_data']
+    
+    result = collection.delete_many({})
+    print(f"Deleted {result.deleted_count} documents from 'train_data' collection.")
