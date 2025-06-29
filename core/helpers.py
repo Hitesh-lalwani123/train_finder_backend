@@ -1,5 +1,4 @@
 from constants import stations
-from visualizer import visualize_connections
 from fastapi import FastAPI, BackgroundTasks
 from constants import FARE_CLASS
 travel_from = "KCG"
