@@ -35,15 +35,18 @@ def get_train_data():
     close_connection(client=client)
     return all_dates
 
-# @app.get("/get-data")
-# def get_train_data(date: str,background_tasks: BackgroundTasks):
-#     client = create_connection()
-#     result = read_document(client,date)
-#     mydata = result[date]
-#     filtered_data= filter_data(mydata,background_tasks)
-#     close_connection(client=client)
+@app.get("/get-all-trains")
+def get_trains(date):
+    result = []
+    client = create_connection()
+    result = read_document(client,date)
+    if result:
+        mydata = result[date]
+        result = [keys for keys in mydata]
+    close_connection(client=client)
     
-#     return filtered_data
+    # return result
+    return result
 
 from core.models import train_input
 import json

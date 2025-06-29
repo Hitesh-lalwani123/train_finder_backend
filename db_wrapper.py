@@ -28,6 +28,8 @@ def read_all(client):
     collection = db['train_data']
     result = collection.find()
     return result
+
+
 def close_connection(client):
     client.close()
     return
