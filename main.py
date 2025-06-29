@@ -4,13 +4,11 @@ app = FastAPI()
 from fastapi.middleware.cors import CORSMiddleware
 from constants import stations
 from core.helpers import filter_data
+from core.models import train_input,date_input
+import json
 origins = [
-    "http://localhost.tiangolo.com",
-    "https://localhost.tiangolo.com",
-    "http://localhost",
-    "http://localhost:8080",
-    "http://localhost:5173",
-    "https://train-finder-frontend-cjaz.vercel.app/"
+    "https://train-finder-frontend-cjaz.vercel.app/",
+    "*"
 ]
 app.add_middleware(
     CORSMiddleware,
@@ -35,21 +33,21 @@ def get_train_data():
     close_connection(client=client)
     return all_dates
 
-@app.get("/get-all-trains")
-def get_trains(date):
+@app.post("/get-all-trains")
+def get_trains(date: date_input):
+    print(date.date)
     result = []
     client = create_connection()
-    result = read_document(client,date)
+    result = read_document(client,date.date)
     if result:
-        mydata = result[date]
+        mydata = result[date.date]
         result = [keys for keys in mydata]
     close_connection(client=client)
     
     # return result
     return result
 
-from core.models import train_input
-import json
+
 @app.post("/get-train-avl")
 def get_train_data(data: train_input,background_tasks: BackgroundTasks):
     

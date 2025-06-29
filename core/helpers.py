@@ -191,5 +191,4 @@ def find_optimal_path(a,b,available_paths):
             }
             route_list.append(curr_route_details)
         routes_dict_list.append([route_list,total_fare])
-    print(routes_dict_list)
     return routes_dict_list

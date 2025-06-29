@@ -5,3 +5,6 @@ class train_input(BaseModel):
     date:str
     from_station:str
     to_station:str
+
+class date_input(BaseModel):
+    date: str
