@@ -12,7 +12,8 @@ currently iterating the train object and finding all avaliable routes instead do
     - find all available paths (availibility) for given train and given date
     - find the most optimal path for given train from one station to another on a given date.
     - find the most optimal way to travel from all trains on a given date.
-
+7. add or remove sl class based on user preference
+8. give some user customization options
 <!-- phase 2 -->
 1. Add multiple breaks per train only instead of two only as implemented now.
 2. Find min waitlist ticket route if no available route found(try one route first if wl is high try split)

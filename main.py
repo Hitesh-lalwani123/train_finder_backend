@@ -1,12 +1,25 @@
 from fastapi import FastAPI,BackgroundTasks
 from db_wrapper import create_connection,close_connection,read_document,read_all
 app = FastAPI()
+from fastapi.middleware.cors import CORSMiddleware
 from constants import stations
 from core.helpers import filter_data
-
+origins = [
+    "http://localhost.tiangolo.com",
+    "https://localhost.tiangolo.com",
+    "http://localhost",
+    "http://localhost:8080",
+    "http://localhost:5173"
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 @app.get("/")
-def test():
-    return {"message": "Hello from FastAPI!"}
+def health_check():
+    return {"message": "api running fine"}
 
 @app.get("/get-all-dates")
 def get_train_data():
@@ -14,8 +27,10 @@ def get_train_data():
     result = read_all(client=client)
     all_dates = []
     for val in result:
-        keys = [key for key in val.keys() if key != "_id"]
-        all_dates.extend(keys)
+        keys = [key for key in val.keys() if key not in ['_id','correlation_id']]
+        print(val[keys[1]])
+        date = {f"{keys[0]}, updated_at:{val[keys[1]]}"}
+        all_dates.extend(date)
     close_connection(client=client)
     return all_dates
 
@@ -29,16 +44,23 @@ def get_train_data():
     
 #     return filtered_data
 
-
-
-@app.get("/get-train-avl")
-def get_train_data(train_number: str,date:str ,background_tasks: BackgroundTasks):
-    client = create_connection()
+from core.models import train_input
+import json
+@app.post("/get-train-avl")
+def get_train_data(data: train_input,background_tasks: BackgroundTasks):
+    
+    train_number= data.train_number
+    date = data.date
+    from_station = data.from_station
+    to_station = data.to_station
+    filtered_data = []
     client = create_connection()
     result = read_document(client,date)
-    mydata = result[date]
-    filtered_data= filter_data(train_number,mydata,background_tasks)
-    
+    if result:
+        mydata = result[date]
+        filtered_data= filter_data(train_number,mydata,from_station,to_station,background_tasks)
+    else:
+        filtered_data = {train_number: "Data not available for current date. Scrape"}
     close_connection(client=client)
     
     return filtered_data
